@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+    <title>HOME</title>
+    </head>
+<body>
+    <h1>英語で書かれたpdfをテキストに変換することができます．英語以外は対応していません．</h1>
+    <h1>テキストは１文ずつ表示されます．</h1>
+    <h1>取得したテキストを任意の文字数で分けることができます．</h1>
+    <p>pdfからテキストに変換する場合はpdfページに，テキストが既にあるときはtextページに進んでください．</p>
+        <a href="{% url 'pdf_app:pdf_upload' %}">pdfページへ</a>
+        <br>
+        <a href="{% url 'pdf_app:text_upload' %}">textページへ</a>
+</body>
+</html>

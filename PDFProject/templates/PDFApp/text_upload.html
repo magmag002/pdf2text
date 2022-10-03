@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+    <title>pdf</title>
+    </head>
+<body>
+    <form method="POST" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <table>
+    {{form.as_table}}
+    </table>
+    
+    <p>sep text numberに入力した文字数で文章を分けることができます．</p>
+    <p>文章を入力したら，送信を押してください．</p>
+    <button id="sending" type="submit" class="sending">送信</button>
+    <br>
+
+    <a href="{% url 'pdf_app:text_upload' %}">データを削除してページを再読み込み</a>
+    <br>
+    <a href="{% url 'pdf_app:index' %}">Homeページへ</a>
+    <br>
+
+    {% if text != '' %}
+        
+        <div id="textStart">
+            <p>変換したテキスト</p>
+            <p id='insert_sep_0'></p>
+        </div>
+
+            <script>
+            let i =0
+            let element = document.getElementById('textStart');
+
+
+
+            {% for kari_text in text %}
+                element.insertAdjacentHTML('beforeend', '<p id ='+i+'>{{kari_text}}</p>');
+                i++;
+            {% endfor %}
+
+            const word_cnt = {{word_cnt}};
+            let text_sum=0;
+            let k =0;
+            let print_num=0
+            for (const value of word_cnt){
+                text_sum += value;
+                if (text_sum > {{sep_text_number}}){
+                    if (k>2){
+                    let element = document.getElementById(k-2);
+                    print_num = text_sum-value
+                    element.insertAdjacentHTML('beforeend', '<p>'+print_num+'words'+'</p></br>');
+                    text_sum=value;
+                    
+                }
+                else{
+                    let element = document.getElementById(k-1);
+                    print_num = text_sum-value
+                    element.insertAdjacentHTML('beforeend', '<p>'+print_num+'words'+'</p></br>');
+                    text_sum=value;
+
+                }
+                }
+
+                if(k===word_cnt.length-1) {
+                let rem = document.getElementById(k);
+                rem.insertAdjacentHTML('beforeend','<p>'+text_sum+'words'+'</p></br>');
+                }
+
+                k++;
+                
+            };
+        
+            </script>
+        {% endif %}
+
+
+
+
+    </form>
+</body>
+</html>
